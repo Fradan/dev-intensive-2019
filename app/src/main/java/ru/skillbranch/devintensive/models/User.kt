@@ -13,28 +13,10 @@ data class User (
     var avatar:String?,
     var rating:Int = 0,
     var respect:Int = 0,
-    val lastVisit: Date? = null,
+    val lastVisit: Date? = Date(),
     val isOnline:Boolean = false
 ){
     constructor(id:String, firstName: String?, lastName: String?) : this(id, firstName, lastName, null)
-
-    constructor(id:String) : this(id, "John", "Doe $id")
-
-    private fun getintro() = """
-        $firstName $lastName
-    """.trimIndent()
-
-    fun printMe() =
-        println("""
-        id: $id
-        firstName: $firstName
-        lastName: $lastName
-        avatar: $avatar
-        rating: $rating
-        respect: $respect
-        lastVisit: $lastVisit
-        isOnline: $isOnline
-                """.trimIndent())
 
     companion object Factory {
         private var lastId: Int = -1
@@ -65,6 +47,9 @@ data class User (
         fun respect (respect: Int) = apply { this.respect = respect }
         fun lastVisit (lastVisit: Date?) = apply { this.lastVisit = lastVisit }
         fun isOnline (isOnline: Boolean) = apply { this.isOnline = isOnline}
+        fun build () : User{
+            return User(id, firstName, lastName, avatar, rating, respect, lastVisit, isOnline)
+        }
     }
 }
 

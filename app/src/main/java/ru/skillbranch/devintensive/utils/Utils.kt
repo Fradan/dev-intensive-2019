@@ -6,9 +6,10 @@ package ru.skillbranch.devintensive.utils
 object Utils {
     fun parseFullName(fullName:String?):Pair<String?, String?>{
         val parts : List<String>? = fullName?.split(' ', ignoreCase = true)
-        var firstName = parts?.getOrNull(0).orEmpty()
-        var lastName = parts?.getOrNull(1).orEmpty()
-        return firstName to lastName
+        var firstName = parts?.getOrNull(0)
+        var lastName = parts?.getOrNull(1)
+
+        return (if (firstName.isNullOrEmpty()) null else firstName) to (if (lastName.isNullOrEmpty()) null else lastName)
     }
 
 
@@ -20,8 +21,8 @@ object Utils {
             'г' to "g",
             'д' to "d",
             'е' to "e",
-            'ё' to "yo",
-            'ж' to "dj",
+            'ё' to "e",
+            'ж' to "zh",
             'з' to "z",
             'и' to "i",
             'й' to "i",
@@ -36,10 +37,11 @@ object Utils {
             'т' to "t",
             'у' to "u",
             'ф' to "f",
-            'х' to "kh",
-            'ц' to "ts",
-            'ч' to "sh",
-            'щ' to "sch",
+            'х' to "h",
+            'ц' to "c",
+            'ч' to "ch",
+            'ш' to "sh",
+            'щ' to "sh'",
             'ъ' to "",
             'ы' to "i",
             'ь' to "",
@@ -52,8 +54,8 @@ object Utils {
             'Г' to "G",
             'Д' to "D",
             'Е' to "E",
-            'Ё' to "Yo",
-            'Ж' to "Dj",
+            'Ё' to "E",
+            'Ж' to "Zh",
             'З' to "Z",
             'И' to "I",
             'Й' to "I",
@@ -68,10 +70,11 @@ object Utils {
             'Т' to "T",
             'у' to "U",
             'ф' to "F",
-            'Х' to "Kh",
-            'Ц' to "Ts",
-            'Ч' to "Sh",
-            'Щ' to "Sch",
+            'Х' to "H",
+            'Ц' to "C",
+            'Ч' to "Ch",
+            'Ш' to "Sh",
+            'Щ' to "Sh'",
             'Ъ' to "",
             'Ы' to "I",
             'Ь' to "",
@@ -80,7 +83,7 @@ object Utils {
             'Я' to "Ya")
 
     fun transliteration(payLoad: String, divider: String = " "): String {
-        var words = payLoad.split(divider)
+        var words = payLoad.split(" ")
 
         val res = words.map { word ->
             var newWord = ""
@@ -93,9 +96,10 @@ object Utils {
         return res.joinToString(separator = divider)
     }
 
-    fun toInitials(firstName: String?, lastName: String?): String {
-        var firstNameInit = firstName?.getOrNull(0)
-        var lastNameInit = lastName?.getOrNull(0)
-        return listOfNotNull(firstNameInit, lastNameInit).joinToString(separator = "")
+    fun toInitials(firstName: String?, lastName: String?): String? {
+        var firstNameInit = firstName?.trim()?.getOrNull(0)?.toUpperCase()
+        var lastNameInit = lastName?.trim()?.getOrNull(0)?.toUpperCase()
+        var result = listOfNotNull(firstNameInit, lastNameInit).joinToString(separator = "")
+        return if (result.isNullOrEmpty()) null else result
     }
 }
