@@ -13,7 +13,9 @@ fun String.truncate(amount : Int = 16) : String {
 fun String.stripHtml() : String {
     var regex = "<[^>]*>".toRegex()
     var escapeSymbols = "[&<>'\"]+".toRegex()
+    var trimmer = "\\s\\s+".toRegex()
     var res = regex.replace(this, "")
     res = escapeSymbols.replace(res, "")
-    return r.replace("  ", "")
+    res = trimmer.replace(res, " ")
+    return res
 }
