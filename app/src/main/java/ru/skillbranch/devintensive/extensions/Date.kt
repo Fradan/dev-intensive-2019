@@ -53,7 +53,6 @@ enum class TimeUnits {
     fun plural(value: Int) : String {
 
         var strVal: String = value.toString().takeLast(2)
-        var value = strVal.toInt()
         var result: String
         when {
             strVal.toInt() in 5..20 -> result = getVal(this, TimeType.THIRDTYPE)
