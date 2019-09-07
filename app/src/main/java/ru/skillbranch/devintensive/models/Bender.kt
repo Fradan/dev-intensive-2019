@@ -30,7 +30,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         } else {
             status = status.nextStatus()
             errorAnswerCounter += 1
-            if (errorAnswerCounter > 3) {
+            if (errorAnswerCounter > 2) {
                 status = Status.NORMAL
                 question = Question.NAME
                 errorAnswerCounter = 0
