@@ -19,13 +19,12 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     }
 
     fun listenAnswer(answer: String) : Pair<String, Triple<Int, Int, Int>> {
+        val validationText = question.validateAnswer(answer)
+        if (validationText !== "") {
+            return "$validationText\n${question.question}" to status.color
+        }
 
         return if (question.answer.contains(answer.toLowerCase())) {
-            val validationText = question.validateAnswer(answer)
-            if (validationText !== "") {
-                return "$validationText\n${question.question}" to status.color
-            }
-
             question = question.nextQuestion()
             "Отлично - ты справился\n${question.question}" to status.color
         } else {
@@ -37,7 +36,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
                 errorAnswerCounter = 0
                 "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
             } else {
-                "Это неправильный ответ!\n${question.question}" to status.color
+                "Это неправильный ответ\n${question.question}" to status.color
             }
         }
     }
