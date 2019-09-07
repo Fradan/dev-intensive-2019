@@ -23,7 +23,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         return if (question.answer.contains(answer.toLowerCase())) {
             val validationText = question.validateAnswer(answer)
             if (validationText !== "") {
-                return validationText to status.color
+                return "$validationText\n${question.question}" to status.color
             }
 
             question = question.nextQuestion()
@@ -37,7 +37,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
                 errorAnswerCounter = 0
                 "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
             } else {
-                "Это не правильный ответ!\n${question.question}" to status.color
+                "Это неправильный ответ!\n${question.question}" to status.color
             }
         }
     }
@@ -61,7 +61,6 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         NAME("Как меня зовут?", listOf("бендер", "bender")) {
             override fun nextQuestion(): Question = PROFESSION
             override fun validateAnswer(answer: String): String {
-                Log.d("M_", "$answer ${answer.firstOrNull()?.isUpperCase()}")
                 if (answer.firstOrNull()?.isUpperCase() == true) {
                     return ""
                 }
@@ -90,7 +89,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         },
         BDAY("Когда меня создали?", listOf("2993")) {
             override fun validateAnswer(answer: String): String {
-                return if (!answer.contains("(^\\d+\$)+\$")) {
+                return if (!answer.contains(Regex("^\\d+$"))) {
                     "Год моего рождения должен содержать только цифры"
                 } else ""
             }
@@ -99,7 +98,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         },
         SERIAL("Мой серийный номер?", listOf("2716057")) {
             override fun validateAnswer(answer: String): String {
-                return if (answer.length != 7 || !answer.contains("(^\\d+\$)+\$")) {
+                return if (answer.length != 7 || !answer.contains(Regex("^\\d+$"))) {
                     "Серийный номер содержит только цифры, и их 7"
                 } else {
                     ""
